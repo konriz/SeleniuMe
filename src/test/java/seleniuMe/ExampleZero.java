@@ -17,6 +17,7 @@ public class ExampleZero {
     @BeforeClass
     public static void openPlayground() {
 
+        System.setProperty("webdriver.gecko.driver", "I:\\gecko\\geckodriver.exe");
         driver = new FirefoxDriver();
         driver.navigate().to("http://timvroom.com/selenium/playground/");
 
@@ -89,10 +90,10 @@ public class ExampleZero {
     @Test
     public void case08() {
         if (driver instanceof JavascriptExecutor) {
-            Object jsReturn = ((JavascriptExecutor) driver)
-                    .executeScript("got_return_from_js_function()");
+            Long answer = (Long)((JavascriptExecutor) driver)
+                    .executeScript("return got_return_from_js_function()");
 
-            driver.findElement(By.id("answer8")).sendKeys((String) jsReturn);
+            driver.findElement(By.id("answer8")).sendKeys(answer.toString());
         }
     }
 
@@ -155,15 +156,19 @@ public class ExampleZero {
     @Test
     public void case14()
     {
-        try
+
+        WebElement purplebox = driver.findElement(By.id("purplebox"));
+
+        if (purplebox.isDisplayed())
         {
-            driver.findElement(By.id("purplebox"));
             driver.findElement(By.id("answer14")).sendKeys("yes");
         }
-        catch (NoSuchElementException e)
+        else
         {
             driver.findElement(By.id("answer14")).sendKeys("no");
         }
+
+
     }
 
     @Test
@@ -192,10 +197,10 @@ public class ExampleZero {
     @AfterClass
     public static void closeFirefox() throws InterruptedException
     {
-//        if(driver != null)
-//        {
-//            driver.close();
-//        }
+        if(driver != null)
+        {
+            driver.close();
+        }
     }
 
 }
